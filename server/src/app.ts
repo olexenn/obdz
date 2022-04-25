@@ -3,6 +3,7 @@ import Controller from "./interfaces/controller.interface";
 import cookieParser from "cookie-parser";
 import errorMiddleware from "./middlewares/errors.middleware";
 import path from "path/posix";
+import cors from "cors";
 
 class App {
   public app: express.Application;
@@ -34,6 +35,7 @@ class App {
   private initMiddlewares() {
     this.app.use(express.json());
     this.app.use(cookieParser());
+    this.app.use(cors());
     console.log("Initialized middlewares");
   }
 
