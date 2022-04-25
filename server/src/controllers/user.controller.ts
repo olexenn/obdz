@@ -8,6 +8,7 @@ import Controller from "../interfaces/controller.interface";
 import AuthMiddleware from "../middlewares/admin.middleware";
 import validationMiddleware from "../middlewares/validation.middleware";
 import UserService from "../services/user.service";
+import Logger from "../utils/logger.util";
 
 class UserController implements Controller {
   public path = "/users";
@@ -54,13 +55,16 @@ class UserController implements Controller {
   ) => {
     try {
       await this.userService.updatePfp(req.user, req.file);
+      Logger.info(`Updated pfp for user: ${req.user.id}`);
       res.json({ msg: "Successfully updated pfp" });
     } catch (e) {
+      Logger.error(`Updating pfp failed: ${e}`);
       next(new HttpException(400, "No file was provided"));
     }
   };
 
   private getInfo = async (req: Request, res: Response, next: NextFunction) => {
+    Logger.info(`Send user info, user: ${req.user.id}`);
     res.json(req.user);
   };
 
@@ -77,8 +81,14 @@ class UserController implements Controller {
       data.lastName
     );
     if (!user) {
+      Logger.warn(
+        `Trying to create user ${data.username}, which already exists`
+      );
       next(new HttpException(400, "User with this username already exists"));
-    } else res.status(201).json(user);
+    } else {
+      Logger.info(`Created user: ${user.id}`);
+      res.status(201).json(user);
+    }
   };
 
   private login = async (req: Request, res: Response, next: NextFunction) => {
@@ -87,11 +97,14 @@ class UserController implements Controller {
     if (user) {
       const tokens = await this.userService.loginUser(user, data.password);
       if (tokens) {
+        Logger.info(`Successfully logged user: ${user.id} in`);
         res.json(tokens);
       } else {
+        Logger.warn(`Wrong credentials for login`);
         next(new WrongCredentialException());
       }
     } else {
+      Logger.warn(`Wrong credentials for login`);
       next(new WrongCredentialException());
     }
   };

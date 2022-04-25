@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import NotAuthorizedException from "../exceptions/NotAuthorizedException";
 import WrongAuthenticationTokenException from "../exceptions/WrongAuthenticationTokenException";
 import UserService from "../services/user.service";
+import Logger from "../utils/logger.util";
 
 class AuthMiddleware {
   public userService = new UserService();
@@ -20,12 +21,17 @@ class AuthMiddleware {
           req.user = await user;
           next();
         } else {
+          Logger.warn("Unauthorized Call");
           next(new NotAuthorizedException());
         }
       } catch (e) {
+        Logger.error(`Unauthorized Call with error: ${e}`);
         next(new NotAuthorizedException());
       }
-    } else next(new NotAuthorizedException());
+    } else {
+      Logger.warn("Unauthorized Call");
+      next(new NotAuthorizedException());
+    }
   };
 
   public isAdmin = async (req: Request, res: Response, next: NextFunction) => {
@@ -39,13 +45,17 @@ class AuthMiddleware {
         if (user.role === "admin") {
           next();
         } else {
+          Logger.warn("Not Admin Call");
           next(new WrongAuthenticationTokenException());
         }
       } catch (e) {
-        console.error(e);
+        Logger.error(`Not Admin Call with error: ${e}`);
         next(new NotAuthorizedException());
       }
-    } else next(new NotAuthorizedException());
+    } else {
+      Logger.warn("Not Admin Call");
+      next(new NotAuthorizedException());
+    }
   };
 }
 
