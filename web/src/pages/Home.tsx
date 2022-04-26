@@ -15,8 +15,8 @@ import { useActions } from "../hooks/useActions";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 
 const Home: React.FC = () => {
-  const { logout } = useActions();
   const navigate = useNavigate();
+  const { setIsAuth, setToken } = useActions();
 
   // TODO: redo user state
   const shit = {
@@ -30,10 +30,17 @@ const Home: React.FC = () => {
   const [user, setUser] = useState<IUser>(shit);
   const [update, setUpdate] = useState(false);
 
-  //console.log(user.username);
+  console.log("render");
+
   useEffect(() => {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
     const call = async () => {
       const { data } = await UserApi.getInfo(token);
+      data.profilePicture = "http://localhost:3001/pfp/" + data.profilePicture;
       console.log(data);
       setUser(data);
     };
@@ -42,7 +49,9 @@ const Home: React.FC = () => {
   }, [update]);
 
   const handleLogout = () => {
-    logout();
+    setIsAuth(false);
+    setToken("");
+    localStorage.removeItem("auth");
     return navigate("/login");
   };
 
@@ -56,7 +65,7 @@ const Home: React.FC = () => {
         boxShadow="dark-lg"
       >
         <Image
-          src={`http://localhost:3001/pfp/${user.profilePicture}`}
+          src={user.profilePicture}
           alt={user.username}
           boxSize="200px"
           borderRadius="full"

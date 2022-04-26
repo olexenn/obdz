@@ -14,12 +14,13 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import UserApi from "../api/UserApi";
 import ErrorMessage from "../components/ErrorMessage";
 import { useActions } from "../hooks/useActions";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 
 const Login: React.FC = () => {
-  const { login } = useActions();
+  const { setError, setIsLoading, setIsAuth, setToken } = useActions();
   const navigate = useNavigate();
 
   const isLoading = useTypedSelector((state) => state.authReducer.isLoading);
@@ -31,16 +32,30 @@ const Login: React.FC = () => {
 
   const handlePasswordVisibility = () => setShowPassword(!showPassword);
 
-  const handleSubmit = (event: React.SyntheticEvent) => {
+  const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
 
-    login(username, password);
-    setTimeout(() => {
+    try {
+      setIsLoading(true);
+      const { data } = await UserApi.login(username, password);
+      setIsAuth(true);
+      setToken(data.accessToken);
+      setIsLoading(false);
+      localStorage.setItem("auth", data.accessToken);
+    } catch (e) {
+      setError("Неправильний логін чи пароль");
+      setIsLoading(false);
       setUsername("");
       setPassword("");
       setShowPassword(false);
-      navigate("/", { replace: true });
-    }, 1000);
+      return;
+    }
+
+    setUsername("");
+    setPassword("");
+    setShowPassword(false);
+    if (error) setError("");
+    navigate("/", { replace: true });
   };
 
   return (

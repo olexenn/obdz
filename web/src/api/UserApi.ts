@@ -19,7 +19,6 @@ class UserApi {
     username: string,
     password: string
   ): Promise<AxiosResponse<ITokens>> {
-    console.log(0);
     return axios.post<ITokens>(`${this.url}/login`, { username, password });
   }
 
