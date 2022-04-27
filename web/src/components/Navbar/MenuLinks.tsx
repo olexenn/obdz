@@ -1,5 +1,5 @@
 import { Box, Stack } from "@chakra-ui/react";
-import ThemeToggler from "../ThemeToggler";
+import ThemeToggler from "./ThemeToggler";
 import AuthButtons from "./AuthButtons";
 import NavLink from "./NavLink";
 

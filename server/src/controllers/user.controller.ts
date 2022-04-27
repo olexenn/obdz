@@ -124,6 +124,7 @@ class UserController implements Controller {
     next: NextFunction
   ) => {
     const users = await this.userService.getAllUsers();
+    Logger.info("Send all user's to admin");
     res.json(users);
   };
 

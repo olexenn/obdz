@@ -53,6 +53,11 @@ class UserService {
    */
   async getAllUsers(): Promise<User[]> {
     const users = await this.userRepository.find({ where: { role: "user" } });
+    users.map((user) => {
+      user.profilePicture
+        ? (user.profilePicture = `http://localhost:3001/pfp/${user.profilePicture}`)
+        : (user.profilePicture = "");
+    });
     return users;
   }
 
@@ -107,7 +112,13 @@ class UserService {
    */
   async findUserByToken(token: string): Promise<User> {
     const userData = this.tokenService.validateAccessToken(token);
-    return await this.userRepository.findOne({ where: { id: userData.sub } });
+    const user = await this.userRepository.findOne({
+      where: { id: userData.sub },
+    });
+    user.profilePicture
+      ? (user.profilePicture = `http://localhost:3001/pfp/${user.profilePicture}`)
+      : (user.profilePicture = "");
+    return user;
   }
 
   /**

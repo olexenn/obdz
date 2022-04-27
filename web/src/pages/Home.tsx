@@ -20,6 +20,7 @@ const Home: React.FC = () => {
 
   // TODO: redo user state
   const shit = {
+    id: 0,
     username: "",
     firstName: "",
     lastName: "",
@@ -35,7 +36,6 @@ const Home: React.FC = () => {
   useEffect(() => {
     const call = async () => {
       const { data } = await UserApi.getInfo(token);
-      data.profilePicture = "http://localhost:3001/pfp/" + data.profilePicture;
       console.log(data);
       setUser(data);
     };

@@ -9,6 +9,7 @@ interface ILogin {
 }
 
 export interface IUser {
+  id: number;
   username: string;
   firstName: string;
   lastName: string;
@@ -31,6 +32,37 @@ class UserApi {
         Authorization: token,
       },
     });
+  }
+
+  static async getAllUsers(token: string): Promise<AxiosResponse<IUser[]>> {
+    return axios.get(`${this.url}/all`, {
+      headers: {
+        Authorization: token,
+      },
+    });
+  }
+
+  static async register(
+    username: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    token: string
+  ) {
+    return axios.post(
+      `${this.url}/register`,
+      {
+        username: username,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+      },
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
   }
 }
 

@@ -1,11 +1,10 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import PrivateRoute from "../components/PrivateRoute";
-import Home from "../pages/Home";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
-import Users from "../pages/Users";
+import Home from "../../pages/Home";
+import Login from "../../pages/Login";
+import Users from "../../pages/Users";
 import AdminRoute from "./AdminRoute";
+import PrivateRoute from "./PrivateRoute";
 
 const AppRouter: React.FC = () => {
   return (
@@ -16,14 +15,6 @@ const AppRouter: React.FC = () => {
         element={
           <PrivateRoute>
             <Home />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/register"
-        element={
-          <PrivateRoute>
-            <Register />
           </PrivateRoute>
         }
       />
