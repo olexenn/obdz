@@ -1,4 +1,5 @@
-import { Link, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 type Props = {
   children: string;
@@ -7,7 +8,7 @@ type Props = {
 
 const NavLink = (props: Props) => {
   return (
-    <Link href={props.to}>
+    <Link to="/">
       <Text display="block">{props.children}</Text>
     </Link>
   );
