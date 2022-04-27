@@ -46,6 +46,11 @@ class UserController implements Controller {
       this.authMiddleware.isAuthorized,
       this.updateImage,
     ]);
+
+    this.router.get(`${this.path}/all`, [
+      this.authMiddleware.isAdmin,
+      this.getUsers,
+    ]);
   }
 
   private updateImage = async (
@@ -97,8 +102,12 @@ class UserController implements Controller {
     if (user) {
       const tokens = await this.userService.loginUser(user, data.password);
       if (tokens) {
+        const resp = {
+          tokens: tokens,
+          role: user.role,
+        };
         Logger.info(`Successfully logged user: ${user.id} in`);
-        res.json(tokens);
+        res.json(resp);
       } else {
         Logger.warn(`Wrong credentials for login`);
         next(new WrongCredentialException());
@@ -107,6 +116,15 @@ class UserController implements Controller {
       Logger.warn(`Wrong credentials for login`);
       next(new WrongCredentialException());
     }
+  };
+
+  private getUsers = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const users = await this.userService.getAllUsers();
+    res.json(users);
   };
 
   private createSuperUser = async (

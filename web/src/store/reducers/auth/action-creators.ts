@@ -4,6 +4,7 @@ import {
   SetErrorAction,
   SetIsLoadingAction,
   SetTokenAction,
+  SetRoleAction,
 } from "./types";
 
 const AuthActionCreators = {
@@ -24,6 +25,11 @@ const AuthActionCreators = {
 
   setToken: (payload: string): SetTokenAction => ({
     type: AuthActionEnum.SET_TOKEN,
+    payload: payload,
+  }),
+
+  setRole: (payload: string): SetRoleAction => ({
+    type: AuthActionEnum.SET_ROLE,
     payload: payload,
   }),
 };

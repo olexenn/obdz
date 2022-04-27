@@ -7,6 +7,7 @@ const initialState: AuthState = {
   isLoading: false,
   error: "",
   token: checkTok ? checkTok : "",
+  role: "",
 };
 
 function authReducer(state = initialState, action: AuthAction): AuthState {
@@ -19,6 +20,8 @@ function authReducer(state = initialState, action: AuthAction): AuthState {
       return { ...state, error: action.payload };
     case AuthActionEnum.SET_TOKEN:
       return { ...state, token: action.payload };
+    case AuthActionEnum.SET_ROLE:
+      return { ...state, role: action.payload };
     default:
       return state;
   }

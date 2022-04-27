@@ -3,6 +3,7 @@ export interface AuthState {
   isLoading: boolean;
   error: string;
   token: string;
+  role: string;
 }
 
 export enum AuthActionEnum {
@@ -10,6 +11,7 @@ export enum AuthActionEnum {
   SET_IS_LOADING = "SET_IS_LOADING",
   SET_ERROR = "SET_ERROR",
   SET_TOKEN = "SET_TOKEN",
+  SET_ROLE = "SET_ROLE",
 }
 
 export interface SetAuthAction {
@@ -32,8 +34,14 @@ export interface SetTokenAction {
   payload: string;
 }
 
+export interface SetRoleAction {
+  type: AuthActionEnum.SET_ROLE;
+  payload: string;
+}
+
 export type AuthAction =
   | SetAuthAction
   | SetIsLoadingAction
   | SetErrorAction
-  | SetTokenAction;
+  | SetTokenAction
+  | SetRoleAction;

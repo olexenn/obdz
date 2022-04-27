@@ -48,6 +48,15 @@ class UserService {
   }
 
   /**
+   * fetch all users from db
+   * @returns all users with role "user"
+   */
+  async getAllUsers(): Promise<User[]> {
+    const users = await this.userRepository.find({ where: { role: "user" } });
+    return users;
+  }
+
+  /**
    * Login user
    * @param {User} user: user object
    * @param {string} password: password to check

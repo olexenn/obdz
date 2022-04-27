@@ -33,11 +33,6 @@ const Home: React.FC = () => {
   console.log("render");
 
   useEffect(() => {
-    if (!token) {
-      navigate("/login");
-      return;
-    }
-
     const call = async () => {
       const { data } = await UserApi.getInfo(token);
       data.profilePicture = "http://localhost:3001/pfp/" + data.profilePicture;

@@ -20,11 +20,12 @@ import { useActions } from "../hooks/useActions";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 
 const Login: React.FC = () => {
-  const { setError, setIsLoading, setIsAuth, setToken } = useActions();
+  const { setError, setIsLoading, setIsAuth, setToken, setRole } = useActions();
   const navigate = useNavigate();
 
   const isLoading = useTypedSelector((state) => state.authReducer.isLoading);
   const error = useTypedSelector((state) => state.authReducer.error);
+  const role = useTypedSelector((state) => state.authReducer.role);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -39,9 +40,10 @@ const Login: React.FC = () => {
       setIsLoading(true);
       const { data } = await UserApi.login(username, password);
       setIsAuth(true);
-      setToken(data.accessToken);
+      setToken(data.tokens.accessToken);
+      setRole(data.role);
       setIsLoading(false);
-      localStorage.setItem("auth", data.accessToken);
+      localStorage.setItem("auth", data.tokens.accessToken);
     } catch (e) {
       setError("Неправильний логін чи пароль");
       setIsLoading(false);
@@ -55,7 +57,9 @@ const Login: React.FC = () => {
     setPassword("");
     setShowPassword(false);
     if (error) setError("");
-    navigate("/", { replace: true });
+    role === "user"
+      ? navigate("/", { replace: true })
+      : navigate("/users", { replace: true });
   };
 
   return (

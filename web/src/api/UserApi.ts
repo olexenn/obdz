@@ -1,8 +1,11 @@
 import axios, { AxiosResponse } from "axios";
 
-interface ITokens {
-  accessToken: string;
-  refreshToken: string;
+interface ILogin {
+  tokens: {
+    accessToken: string;
+    refreshToken: string;
+  };
+  role: string;
 }
 
 export interface IUser {
@@ -18,8 +21,8 @@ class UserApi {
   static async login(
     username: string,
     password: string
-  ): Promise<AxiosResponse<ITokens>> {
-    return axios.post<ITokens>(`${this.url}/login`, { username, password });
+  ): Promise<AxiosResponse<ILogin>> {
+    return axios.post<ILogin>(`${this.url}/login`, { username, password });
   }
 
   static async getInfo(token: string): Promise<AxiosResponse<IUser>> {
