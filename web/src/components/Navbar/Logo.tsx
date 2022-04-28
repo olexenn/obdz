@@ -1,11 +1,14 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Image, useColorMode } from "@chakra-ui/react";
 
 const Logo = () => {
+  const { colorMode } = useColorMode();
   return (
     <Box>
-      <Text fontSize="lg" fontWeight="bold">
-        Logo
-      </Text>
+      {colorMode === "light" ? (
+        <Image src="herbBlack.svg" alt="logoLight" boxSize="50" />
+      ) : (
+        <Image src="herbWhite.svg" alt="logoDark" boxSize="50" />
+      )}
     </Box>
   );
 };
