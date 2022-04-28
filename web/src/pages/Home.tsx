@@ -31,12 +31,9 @@ const Home: React.FC = () => {
   const [user, setUser] = useState<IUser>(shit);
   const [update, setUpdate] = useState(false);
 
-  console.log("render");
-
   useEffect(() => {
     const call = async () => {
       const { data } = await UserApi.getInfo(token);
-      console.log(data);
       setUser(data);
     };
 
