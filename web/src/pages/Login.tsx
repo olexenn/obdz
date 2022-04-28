@@ -9,11 +9,10 @@ import { useTypedSelector } from "../hooks/useTypedSelector";
 
 const Login: React.FC = () => {
   const { setError, setIsLoading, setIsAuth, setToken, setRole } = useActions();
+  const { isLoading, error, role } = useTypedSelector(
+    (state) => state.authReducer
+  );
   const navigate = useNavigate();
-
-  const isLoading = useTypedSelector((state) => state.authReducer.isLoading);
-  const error = useTypedSelector((state) => state.authReducer.error);
-  const role = useTypedSelector((state) => state.authReducer.role);
 
   const [state, setState] = useState({ username: "", password: "" });
 
@@ -35,6 +34,7 @@ const Login: React.FC = () => {
       setRole(data.role);
       setIsLoading(false);
       localStorage.setItem("auth", data.tokens.accessToken);
+      localStorage.setItem("role", data.role);
     } catch (e) {
       setError("Неправильний логін чи пароль");
       setIsLoading(false);

@@ -1,6 +1,6 @@
 import { Box, ModalFooter, useToast } from "@chakra-ui/react";
-import React, { useState } from "react";
-import UserApi from "../../api/UserApi";
+import { useState } from "react";
+import UserApi, { IUser } from "../../api/UserApi";
 import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import ErrorMessage from "../Helpers/ErrorMessage";
@@ -8,21 +8,16 @@ import FormInput from "../Helpers/FormInput";
 import MyButton from "../Helpers/MyButton";
 
 type Props = {
+  user: IUser;
   onClose: () => void;
 };
 
-const AddUserForm = (props: Props) => {
-  const toast = useToast();
+const EditUserForm = (props: Props) => {
+  const { updateUser, setError, setIsLoading } = useActions();
   const { error, token } = useTypedSelector((state) => state.authReducer);
-  const { setError, setIsLoading, addUser } = useActions();
+  const [state, setState] = useState<IUser>(props.user);
 
-  const [state, setState] = useState({
-    username: "",
-    password: "",
-    confirmPassword: "",
-    firstName: "",
-    lastName: "",
-  });
+  const toast = useToast();
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({
@@ -31,36 +26,27 @@ const AddUserForm = (props: Props) => {
     });
   };
 
-  const handleClose = () => {
-    if (error) setError("");
-    props.onClose();
-  };
-
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    if (state.password !== state.confirmPassword) {
-      setError("Паролі мають бути однаковими");
-      return;
-    }
-
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      const { data } = await UserApi.register(
+      await UserApi.updateUser(
+        state.id,
         state.username,
-        state.password,
         state.firstName,
         state.lastName,
         token
       );
-      addUser(data);
+      updateUser(state);
       setIsLoading(false);
+      if (error) setError("");
       props.onClose();
       toast({
         title: "Успіх",
-        description: "Користувач був успішно створений",
+        description: `Інформація щодо користувача ${state.username} була оновлена`,
         status: "success",
-        duration: 5000,
         isClosable: true,
+        duration: 3000,
       });
     } catch (e) {
       setError("Користувач з таким юзернеймом вже існує");
@@ -71,8 +57,8 @@ const AddUserForm = (props: Props) => {
 
   return (
     <Box>
+      {error && <ErrorMessage message={error} />}
       <form onSubmit={handleSubmit}>
-        {error && <ErrorMessage message={error} />}
         <FormInput
           title="Юзернейм"
           name="username"
@@ -80,42 +66,24 @@ const AddUserForm = (props: Props) => {
           onChange={handleInput}
         />
         <FormInput
-          isPassword
-          title="Пароль"
-          name="password"
-          value={state.password}
-          onChange={handleInput}
-          mt={4}
-        />
-        <FormInput
-          isPassword
-          title="Повторіть Пароль"
-          name="confirmPassword"
-          value={state.confirmPassword}
-          onChange={handleInput}
-          mt={4}
-        />
-        <FormInput
           title="Імʼя"
           name="firstName"
           value={state.firstName}
           onChange={handleInput}
-          mt={4}
         />
         <FormInput
           title="Прізвище"
           name="lastName"
           value={state.lastName}
           onChange={handleInput}
-          mt={4}
         />
         <ModalFooter>
-          <MyButton title="Додати" mr={3} color="teal" type="submit" />
-          <MyButton title="Відмінити" color="red" onClick={handleClose} />
+          <MyButton title="Оновити" color="teal" type="submit" mr={3} />
+          <MyButton title="Відмінити" color="red" onClick={props.onClose} />
         </ModalFooter>
       </form>
     </Box>
   );
 };
 
-export default AddUserForm;
+export default EditUserForm;

@@ -1,13 +1,14 @@
 import { AuthAction, AuthActionEnum, AuthState } from "./types";
 
 const checkTok = localStorage.getItem("auth");
+const checkRole = localStorage.getItem("role");
 
 const initialState: AuthState = {
   isAuth: checkTok ? true : false,
   isLoading: false,
   error: "",
   token: checkTok ? checkTok : "",
-  role: "",
+  role: checkRole ? checkRole : "",
 };
 
 function authReducer(state = initialState, action: AuthAction): AuthState {

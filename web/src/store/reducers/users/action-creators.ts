@@ -1,5 +1,11 @@
 import { IUser } from "../../../api/UserApi";
-import { AddUserAction, SetUsersAction, UserActionEnum } from "./types";
+import {
+  AddUserAction,
+  RemoveUserAction,
+  SetUsersAction,
+  UpdateUserAction,
+  UserActionEnum,
+} from "./types";
 
 const UserActionCreators = {
   setUsers: (payload: IUser[]): SetUsersAction => ({
@@ -9,6 +15,16 @@ const UserActionCreators = {
 
   addUser: (payload: IUser): AddUserAction => ({
     type: UserActionEnum.ADD_USER,
+    payload: payload,
+  }),
+
+  removeUser: (payload: IUser): RemoveUserAction => ({
+    type: UserActionEnum.REMOVE_USER,
+    payload: payload,
+  }),
+
+  updateUser: (payload: IUser): UpdateUserAction => ({
+    type: UserActionEnum.UPDATE_USER,
     payload: payload,
   }),
 };

@@ -64,6 +64,44 @@ class UserApi {
       }
     );
   }
+
+  static async deleteUser(
+    userId: number,
+    token: string
+  ): Promise<AxiosResponse> {
+    return axios.delete(`${this.url}/delete`, {
+      headers: {
+        Authorization: token,
+      },
+      data: {
+        userId: userId,
+      },
+    });
+  }
+
+  static async updateUser(
+    userId: number,
+    username: string,
+    firstName: string,
+    lastName: string,
+    token: string
+  ): Promise<AxiosResponse> {
+    return axios.put(
+      `${this.url}/update`,
+
+      {
+        userId: userId,
+        username: username,
+        firstName: firstName,
+        lastName: lastName,
+      },
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+  }
 }
 
 export default UserApi;

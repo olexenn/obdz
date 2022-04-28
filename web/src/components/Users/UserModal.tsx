@@ -5,12 +5,13 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import AddUserForm from "./AddUserForm";
 
 type Props = {
   onOpen: () => void;
   isOpen: boolean;
   onClose: () => void;
+  header: string;
+  children: JSX.Element;
 };
 
 const UserModal = (props: Props) => {
@@ -18,10 +19,8 @@ const UserModal = (props: Props) => {
     <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered size="lg">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Реєстрація нового користувача</ModalHeader>
-        <ModalBody pb={6}>
-          <AddUserForm onClose={props.onClose} />
-        </ModalBody>
+        <ModalHeader>{props.header}</ModalHeader>
+        <ModalBody pb={6}>{props.children}</ModalBody>
       </ModalContent>
     </Modal>
   );

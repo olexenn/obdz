@@ -134,6 +134,41 @@ class UserService {
   }
 
   /**
+   * Delete user from db
+   * @param userId user's id
+   */
+  async deleteUser(userId: number): Promise<void> {
+    await this.userRepository.delete(userId);
+  }
+
+  /**
+   * Update user's info
+   * @param userId
+   * @param username
+   * @param firstName
+   * @param lastName
+   * @returns user object with success or null on error
+   */
+  async updateUser(
+    userId: number,
+    username: string,
+    firstName: string,
+    lastName: string
+  ): Promise<User | null> {
+    const user = await this.userRepository.findOne(userId);
+    user.username = username;
+    user.firstName = firstName;
+    user.lastName = lastName;
+    try {
+      const updatedUser = await this.userRepository.save(user);
+      return updatedUser;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  }
+
+  /**
    * Refresh Jwt Tokens
    * @param {string} token: refresh token
    * @returns {Tokens} tokens: jwt auth tokens

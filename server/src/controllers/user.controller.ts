@@ -1,7 +1,9 @@
 import { NextFunction, Request, Response, Router } from "express";
 import multer from "multer";
+import DeleteUserDto from "../dtos/delete-user.dto";
 import LoginDto from "../dtos/login.dto";
 import RegisterDto from "../dtos/register.dto";
+import UpdateUserDto from "../dtos/update-user.dto";
 import HttpException from "../exceptions/HttpException";
 import WrongCredentialException from "../exceptions/WrongCredentialsException";
 import Controller from "../interfaces/controller.interface";
@@ -50,6 +52,18 @@ class UserController implements Controller {
     this.router.get(`${this.path}/all`, [
       this.authMiddleware.isAdmin,
       this.getUsers,
+    ]);
+
+    this.router.delete(`${this.path}/delete`, [
+      this.authMiddleware.isAdmin,
+      validationMiddleware(DeleteUserDto),
+      this.deleteUser,
+    ]);
+
+    this.router.put(`${this.path}/update`, [
+      this.authMiddleware.isAdmin,
+      validationMiddleware(UpdateUserDto),
+      this.updateUser,
     ]);
   }
 
@@ -126,6 +140,40 @@ class UserController implements Controller {
     const users = await this.userService.getAllUsers();
     Logger.info("Send all user's to admin");
     res.json(users);
+  };
+
+  private deleteUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const data: DeleteUserDto = req.body;
+    await this.userService.deleteUser(data.userId);
+    Logger.info(`User ${data.userId} was deleted`);
+    res.json({ msg: "User was successfully deleted" });
+  };
+
+  private updateUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const data: UpdateUserDto = req.body;
+    const user = await this.userService.updateUser(
+      data.userId,
+      data.username,
+      data.firstName,
+      data.lastName
+    );
+    if (!user) {
+      Logger.warn(
+        `Trying to update user ${data.userId} to existed username: ${data.username}`
+      );
+      next(new HttpException(400, "User with this username already exists"));
+    } else {
+      Logger.info(`User ${user.id} was updated`);
+      res.json({ msg: "User was successfully updated" });
+    }
   };
 
   private createSuperUser = async (

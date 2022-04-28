@@ -13,7 +13,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import UserApi, { IUser } from "../api/UserApi";
+import UserApi from "../api/UserApi";
+import AddUserForm from "../components/Users/AddUserForm";
 import TableItem from "../components/Users/TableItem";
 import UserModal from "../components/Users/UserModal";
 import { useActions } from "../hooks/useActions";
@@ -48,7 +49,14 @@ const Users: React.FC = () => {
           Додати Користувача
         </Button>
       </Flex>
-      <UserModal onOpen={onOpen} isOpen={isOpen} onClose={onClose} />
+      <UserModal
+        onOpen={onOpen}
+        isOpen={isOpen}
+        onClose={onClose}
+        header="Реєстрація нового користувача"
+      >
+        <AddUserForm onClose={onClose} />
+      </UserModal>
       <Box borderWidth={1} borderRadius={8} boxShadow="lg">
         <TableContainer>
           <Table variant="simple">
@@ -58,6 +66,7 @@ const Users: React.FC = () => {
                 <Th>Юзернейм</Th>
                 <Th>Імʼя</Th>
                 <Th>Прізвище</Th>
+                <Th>Дії</Th>
               </Tr>
             </Thead>
             <Tbody>
