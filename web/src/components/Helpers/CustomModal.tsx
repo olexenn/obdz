@@ -14,7 +14,7 @@ type Props = {
   children: JSX.Element;
 };
 
-const UserModal = (props: Props) => {
+const CustomModal = (props: Props) => {
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered size="lg">
       <ModalOverlay />
@@ -26,4 +26,4 @@ const UserModal = (props: Props) => {
   );
 };
 
-export default UserModal;
+export default CustomModal;

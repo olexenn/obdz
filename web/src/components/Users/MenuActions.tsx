@@ -15,10 +15,10 @@ import { useRef } from "react";
 import UserApi, { IUser } from "../../api/UserApi";
 import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
+import CustomModal from "../Helpers/CustomModal";
 import MyButton from "../Helpers/MyButton";
 import EditUserForm from "./EditUserForm";
 import MenuActionsAlert from "./MenuActionsAlert";
-import UserModal from "./UserModal";
 
 type Props = {
   user: IUser;
@@ -90,14 +90,14 @@ const MenuActions = (props: Props) => {
         </MenuList>
       </Menu>
 
-      <UserModal
+      <CustomModal
         onOpen={onOpenEdit}
         isOpen={isOpenEdit}
         onClose={onCloseEdit}
         header="Зміна інформації про користувача"
       >
         <EditUserForm user={props.user} onClose={onCloseEdit} />
-      </UserModal>
+      </CustomModal>
     </>
   );
 };

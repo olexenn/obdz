@@ -14,6 +14,7 @@ const AuthButtons = () => {
     setToken("");
     setRole("");
     localStorage.removeItem("auth");
+    localStorage.removeItem("role");
     return navigate("/login", { replace: true });
   };
 
