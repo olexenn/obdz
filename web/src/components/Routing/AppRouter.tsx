@@ -1,10 +1,16 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import Extracts from "../../pages/Extracts";
 import Home from "../../pages/Home";
 import Login from "../../pages/Login";
 import Users from "../../pages/Users";
 import AdminRoute from "./AdminRoute";
 import PrivateRoute from "./PrivateRoute";
+
+const adminRoutes = [
+  { path: "/users", component: <Users /> },
+  { path: "/extracts", component: <Extracts /> },
+];
 
 const AppRouter: React.FC = () => {
   return (
@@ -18,14 +24,15 @@ const AppRouter: React.FC = () => {
           </PrivateRoute>
         }
       />
-      <Route
-        path="/users"
-        element={
-          <AdminRoute>
-            <Users />
-          </AdminRoute>
-        }
-      />
+      {adminRoutes.map((route) => {
+        return (
+          <Route
+            key={route.path}
+            path={route.path}
+            element={<AdminRoute>{route.component}</AdminRoute>}
+          />
+        );
+      })}
     </Routes>
   );
 };

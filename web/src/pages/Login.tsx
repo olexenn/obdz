@@ -1,14 +1,21 @@
 import { Box, Button, CircularProgress, Flex, Heading } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import $http from "../api/axios";
 import UserApi from "../api/UserApi";
 import ErrorMessage from "../components/Helpers/ErrorMessage";
 import FormInput from "../components/Helpers/FormInput";
 import { useActions } from "../hooks/useActions";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 
+interface Me {
+  username: string;
+  role: string;
+  avatar: string;
+}
+
 const Login: React.FC = () => {
-  const { setError, setIsLoading, setIsAuth, setToken, setRole } = useActions();
+  const { setError, setIsLoading, setIsAuth, setRole } = useActions();
   const { isLoading, error, role } = useTypedSelector(
     (state) => state.authReducer
   );
@@ -30,11 +37,15 @@ const Login: React.FC = () => {
       setIsLoading(true);
       const { data } = await UserApi.login(state.username, state.password);
       setIsAuth(true);
-      setToken(data.tokens.accessToken);
-      setRole(data.role);
+      localStorage.setItem("csrf", data.csrf);
+      await $http
+        .get<Me>("/me")
+        .then((response) => {
+          console.log(data);
+          setRole(response.data.role);
+        })
+        .catch((e) => console.log(e));
       setIsLoading(false);
-      localStorage.setItem("auth", data.tokens.accessToken);
-      localStorage.setItem("role", data.role);
     } catch (e) {
       setError("Неправильний логін чи пароль");
       setIsLoading(false);

@@ -5,8 +5,8 @@ import NavLink from "./NavLink";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 const adminLinks = [
-  { route: "/", title: "Додому" },
-  { route: "/users", title: "Користувачі" },
+  { route: "/users", title: "Слідчі" },
+  { route: "/extracts", title: "Справи" },
 ];
 
 const userLinks = [{ route: "/", title: "Додому" }];
@@ -21,21 +21,25 @@ const MenuLinks = () => {
         justify={["center", "space-between", "flex-end", "flex-end"]}
         direction={["column", "row", "row", "row"]}
       >
-        {role === "admin"
-          ? adminLinks.map((link) => {
-              return (
-                <NavLink key={link.title} to={link.route}>
-                  {link.title}
-                </NavLink>
-              );
-            })
-          : userLinks.map((link) => {
-              return (
-                <NavLink key={link.title} to={link.route}>
-                  {link.title}
-                </NavLink>
-              );
-            })}
+        {role.length > 0 && (
+          <>
+            {role === "admin"
+              ? adminLinks.map((link) => {
+                  return (
+                    <NavLink key={link.title} to={link.route}>
+                      {link.title}
+                    </NavLink>
+                  );
+                })
+              : userLinks.map((link) => {
+                  return (
+                    <NavLink key={link.title} to={link.route}>
+                      {link.title}
+                    </NavLink>
+                  );
+                })}
+          </>
+        )}
         <ThemeToggler />
         <AuthButtons />
       </Stack>

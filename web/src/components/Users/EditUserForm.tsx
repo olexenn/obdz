@@ -14,7 +14,7 @@ type Props = {
 
 const EditUserForm = (props: Props) => {
   const { updateUser, setError, setIsLoading } = useActions();
-  const { error, token } = useTypedSelector((state) => state.authReducer);
+  const { error } = useTypedSelector((state) => state.authReducer);
   const [state, setState] = useState<IUser>(props.user);
 
   const toast = useToast();
@@ -33,9 +33,8 @@ const EditUserForm = (props: Props) => {
       await UserApi.updateUser(
         state.id,
         state.username,
-        state.firstName,
-        state.lastName,
-        token
+        state.first_name,
+        state.last_name
       );
       updateUser(state);
       setIsLoading(false);
@@ -67,14 +66,14 @@ const EditUserForm = (props: Props) => {
         />
         <FormInput
           title="Імʼя"
-          name="firstName"
-          value={state.firstName}
+          name="first_name"
+          value={state.first_name}
           onChange={handleInput}
         />
         <FormInput
           title="Прізвище"
-          name="lastName"
-          value={state.lastName}
+          name="last_name"
+          value={state.last_name}
           onChange={handleInput}
         />
         <ModalFooter>

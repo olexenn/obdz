@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { Extract } from "./extract.model";
 import { Token } from "./token.model";
 
 @Entity({ name: "users" })
@@ -46,4 +47,7 @@ export class User {
 
   @OneToMany(() => Token, (token) => token.user)
   tokens: Token[];
+
+  @OneToMany(() => Extract, (extract) => extract.user)
+  extracts: Extract[];
 }
