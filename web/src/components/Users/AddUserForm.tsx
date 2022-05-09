@@ -13,15 +13,15 @@ type Props = {
 
 const AddUserForm = (props: Props) => {
   const toast = useToast();
-  const { error, token } = useTypedSelector((state) => state.authReducer);
+  const { error } = useTypedSelector((state) => state.authReducer);
   const { setError, setIsLoading, addUser } = useActions();
 
   const [state, setState] = useState({
     username: "",
     password: "",
     confirmPassword: "",
-    firstName: "",
-    lastName: "",
+    first_name: "",
+    last_name: "",
   });
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,12 +45,12 @@ const AddUserForm = (props: Props) => {
 
     try {
       setIsLoading(true);
+      console.log(state);
       const { data } = await UserApi.register(
         state.username,
         state.password,
-        state.firstName,
-        state.lastName,
-        token
+        state.first_name,
+        state.last_name
       );
       addUser(data);
       setIsLoading(false);
@@ -97,15 +97,15 @@ const AddUserForm = (props: Props) => {
         />
         <FormInput
           title="Імʼя"
-          name="firstName"
-          value={state.firstName}
+          name="first_name"
+          value={state.first_name}
           onChange={handleInput}
           mt={4}
         />
         <FormInput
           title="Прізвище"
-          name="lastName"
-          value={state.lastName}
+          name="last_name"
+          value={state.last_name}
           onChange={handleInput}
           mt={4}
         />

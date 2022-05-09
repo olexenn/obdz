@@ -10,11 +10,11 @@ const TableItem = (props: Props) => {
   return (
     <Tr>
       <Td>
-        <Avatar name={props.user.username} src={props.user.profilePicture} />
+        <Avatar name={props.user.username} src={props.user.avatar_url} />
       </Td>
       <Td>{props.user.username}</Td>
-      <Td>{props.user.firstName}</Td>
-      <Td>{props.user.lastName}</Td>
+      <Td>{props.user.first_name}</Td>
+      <Td>{props.user.last_name}</Td>
       <Td>
         <MenuActions user={props.user} />
       </Td>

@@ -12,7 +12,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UserApi, { IUser } from "../api/UserApi";
 import { useActions } from "../hooks/useActions";
-import { useTypedSelector } from "../hooks/useTypedSelector";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -22,18 +21,18 @@ const Home: React.FC = () => {
   const shit = {
     id: 0,
     username: "",
-    firstName: "",
-    lastName: "",
-    profilePicture: "",
+    first_name: "",
+    last_name: "",
+    avatar_url: "",
+    role: "user",
   };
 
-  const token = useTypedSelector((state) => state.authReducer.token);
   const [user, setUser] = useState<IUser>(shit);
   const [update, setUpdate] = useState(false);
 
   useEffect(() => {
     const call = async () => {
-      const { data } = await UserApi.getInfo(token);
+      const { data } = await UserApi.getInfo();
       setUser(data);
     };
 
@@ -57,7 +56,7 @@ const Home: React.FC = () => {
         boxShadow="dark-lg"
       >
         <Image
-          src={user.profilePicture}
+          src={user.avatar_url}
           alt={user.username}
           boxSize="200px"
           borderRadius="full"
@@ -66,7 +65,7 @@ const Home: React.FC = () => {
         <Center>
           <VStack>
             <Heading>
-              {user.firstName} {user.lastName}
+              {user.first_name} {user.last_name}
             </Heading>
             <Text>Слідчий</Text>
           </VStack>

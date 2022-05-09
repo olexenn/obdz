@@ -22,7 +22,7 @@ const FormSelect = (props: Props) => {
         {props.options.map((option) => {
           return (
             <option value={option.username} key={option.username}>
-              {option.firstName + " " + option.lastName}
+              {option.first_name + " " + option.last_name}
             </option>
           );
         })}

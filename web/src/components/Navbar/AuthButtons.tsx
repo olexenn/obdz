@@ -1,5 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import $http from "../../api/axios";
 import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 
@@ -9,12 +10,13 @@ const AuthButtons = () => {
   const role = useTypedSelector((state) => state.authReducer.role);
   const { setIsAuth, setToken, setRole } = useActions();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setIsAuth(false);
     setToken("");
     setRole("");
     localStorage.removeItem("auth");
     localStorage.removeItem("role");
+    await $http.delete("/signin");
     return navigate("/login", { replace: true });
   };
 

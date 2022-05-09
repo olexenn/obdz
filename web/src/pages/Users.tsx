@@ -18,7 +18,6 @@ import { useActions } from "../hooks/useActions";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 
 const Users: React.FC = () => {
-  const token = useTypedSelector((state) => state.authReducer.token);
   const users = useTypedSelector((state) => state.UserReducer.users);
 
   const { onOpen, isOpen, onClose } = useDisclosure();
@@ -28,7 +27,8 @@ const Users: React.FC = () => {
 
   useEffect(() => {
     const call = async () => {
-      const { data } = await UserApi.getAllUsers(token);
+      const { data } = await UserApi.getAllUsers();
+      console.log(data);
       setUsers(data);
     };
 

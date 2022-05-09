@@ -27,7 +27,6 @@ type Props = {
 const MenuActions = (props: Props) => {
   const toast = useToast();
   const { removeUser, setIsLoading } = useActions();
-  const { token } = useTypedSelector((state) => state.authReducer);
 
   const {
     isOpen: isOpenDeleteAlert,
@@ -44,7 +43,7 @@ const MenuActions = (props: Props) => {
 
   const handleDelete = async () => {
     setIsLoading(true);
-    await UserApi.deleteUser(props.user.id, token);
+    await UserApi.deleteUser(props.user.id);
     removeUser(props.user);
     setIsLoading(false);
     toast({

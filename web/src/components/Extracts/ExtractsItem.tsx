@@ -12,7 +12,7 @@ const ExtractsItem = (props: Props) => {
     <Tr>
       <Td>{props.number}</Td>
       <Td>{props.authority}</Td>
-      <Td>{props.user.firstName + " " + props.user.lastName}</Td>
+      <Td>{props.user.first_name + " " + props.user.last_name}</Td>
       <Td>
         <Button>Детальніше</Button>
       </Td>
