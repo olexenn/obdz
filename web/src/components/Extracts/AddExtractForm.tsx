@@ -15,18 +15,18 @@ type Props = {
 
 const AddExtractForm = (props: Props) => {
   const { users } = useTypedSelector((state) => state.UserReducer);
-  const { error, token } = useTypedSelector(state => state.authReducer)
+  const { error } = useTypedSelector((state) => state.authReducer);
   const { addExtract, setError, setIsLoading } = useActions();
   const toast = useToast();
 
   const [state, setState] = useState<IAddExtract>({
-    number: "",
+    law_number: "",
     qualification: "",
-    applicantFirstName: "",
-    applicantLastName: "",
+    applicant_first_name: "",
+    applicant_last_name: "",
     description: "",
     authority: "",
-    username: "",
+    user_id: 0,
   });
 
   const handleInput = (
@@ -34,10 +34,17 @@ const AddExtractForm = (props: Props) => {
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
-    setState({
-      ...state,
-      [e.target.name]: e.target.value,
-    });
+    if (e.target.name === "user_id") {
+      setState({
+        ...state,
+        [e.target.name]: parseInt(e.target.value),
+      });
+    } else {
+      setState({
+        ...state,
+        [e.target.name]: e.target.value,
+      });
+    }
   };
 
   const handleClose = () => {
@@ -50,7 +57,8 @@ const AddExtractForm = (props: Props) => {
 
     try {
       setIsLoading(true);
-      const { data } = await ExtractApi.addExtract(state, token);
+      console.log(state);
+      const { data } = await ExtractApi.addExtract(state);
       addExtract(data);
       setIsLoading(false);
       props.onClose();
@@ -74,8 +82,8 @@ const AddExtractForm = (props: Props) => {
         {error && <ErrorMessage message={error} />}
         <FormInput
           title="Номер Впровадження"
-          name="number"
-          value={state.number}
+          name="law_number"
+          value={state.law_number}
           onChange={handleInput}
         />
         <FormInput
@@ -87,15 +95,15 @@ const AddExtractForm = (props: Props) => {
         />
         <FormInput
           title="Імʼя потерпілого"
-          name="applicantFirstName"
-          value={state.applicantFirstName}
+          name="applicant_first_name"
+          value={state.applicant_first_name}
           onChange={handleInput}
           mt={4}
         />
         <FormInput
           title="Прізвище Потерпілого"
-          name="applicantLastName"
-          value={state.applicantLastName}
+          name="applicant_last_name"
+          value={state.applicant_last_name}
           onChange={handleInput}
           mt={4}
         />
@@ -115,8 +123,8 @@ const AddExtractForm = (props: Props) => {
         />
         <FormSelect
           title="Слідчий"
-          name="username"
-          value={state.username}
+          name="user_id"
+          value={state.user_id}
           onChange={handleInput}
           mt={4}
           options={users}

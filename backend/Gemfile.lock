@@ -93,6 +93,9 @@ GEM
     io-console (0.5.11)
     irb (1.4.1)
       reline (>= 0.3.0)
+    jbuilder (2.11.5)
+      actionview (>= 5.0.0)
+      activesupport (>= 5.0.0)
     jwt (2.3.0)
     jwt_sessions (2.7.2)
       jwt (>= 2.2.3, < 3)
@@ -215,6 +218,7 @@ DEPENDENCIES
   bootsnap
   debug
   factory_bot_rails (~> 4.8)
+  jbuilder
   jwt_sessions
   listen (>= 3.0.5, < 3.2)
   mysql2 (~> 0.5)

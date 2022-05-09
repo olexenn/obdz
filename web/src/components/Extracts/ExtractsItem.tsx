@@ -1,18 +1,18 @@
 import { Button, Td, Tr } from "@chakra-ui/react";
-import { IUser } from "../../api/UserApi";
 
 type Props = {
-  number: string;
+  law_number: number;
   authority: string;
-  user: IUser;
+  first_name: string;
+  last_name: string;
 };
 
 const ExtractsItem = (props: Props) => {
   return (
     <Tr>
-      <Td>{props.number}</Td>
+      <Td>{props.law_number}</Td>
       <Td>{props.authority}</Td>
-      <Td>{props.user.first_name + " " + props.user.last_name}</Td>
+      <Td>{props.first_name + " " + props.last_name}</Td>
       <Td>
         <Button>Детальніше</Button>
       </Td>

@@ -18,7 +18,6 @@ import { useActions } from "../hooks/useActions";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 
 const Extracts = () => {
-  const { token } = useTypedSelector((state) => state.authReducer);
   const { extracts } = useTypedSelector((state) => state.ExtractReducer);
   const { setExtracts } = useActions();
 
@@ -27,7 +26,7 @@ const Extracts = () => {
 
   useEffect(() => {
     const call = async () => {
-      const { data } = await ExtractApi.getAllExtracts(token);
+      const { data } = await ExtractApi.getAllExtracts();
       setExtracts(data);
       console.log(extracts);
     };
@@ -67,9 +66,10 @@ const Extracts = () => {
                 return (
                   <ExtractsItem
                     key={extract.id}
-                    number={extract.number}
+                    law_number={extract.law_number}
                     authority={extract.authority}
-                    user={extract.user}
+                    first_name={extract.first_name}
+                    last_name={extract.last_name}
                   />
                 );
               })}

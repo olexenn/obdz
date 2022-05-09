@@ -2,7 +2,7 @@ import { FormControl, FormLabel, Select } from "@chakra-ui/react";
 import { IUser } from "../../api/UserApi";
 
 type Props = {
-  value: string;
+  value: number;
   name: string;
   title: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
@@ -21,7 +21,7 @@ const FormSelect = (props: Props) => {
       >
         {props.options.map((option) => {
           return (
-            <option value={option.username} key={option.username}>
+            <option value={option.id} key={option.username}>
               {option.first_name + " " + option.last_name}
             </option>
           );

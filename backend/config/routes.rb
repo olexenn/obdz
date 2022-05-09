@@ -6,7 +6,10 @@ Rails.application.routes.draw do
   get 'me', controller: :users, action: :me
   put 'avatar', controller: :users, action: :update_avatar
 
+  get 'extract', controller: :extracts, action: :show
+
   namespace :admin do
     resources :users, only: %i[index create update destroy]
+    resources :extracts, only: %i[index create], format: 'json'
   end
 end

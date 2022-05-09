@@ -10,7 +10,6 @@ class Admin::UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    puts @user.username
     if @user.save
       render json: @user, status: :created, methods: [:avatar_url]
     else
